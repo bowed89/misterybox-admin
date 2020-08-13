@@ -1,0 +1,59 @@
+<div class="wrapper">
+
+
+    <div class="main">
+
+        <main class="content">
+            <div class="container-fluid">
+
+
+                <div class="row">
+
+ 
+                    <div class="col-12 col-xl-12">
+
+   
+                        <div class="card">
+        
+                            <table class="table table-striped table-hover">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Nombres y Apellidos </th>
+                                        <th>Carnet de Identidad</th>
+                                        <th>Número de teléfono</th>
+                                        <th>Correo Electrónico</th>
+                                        <th>Nro Factura</th>
+                                        <th>Monto en Bs.</th>
+                                        <th>Ciudad</th>
+                                        <th>Premio</th>
+                                        <th>Fecha Premio</th>
+                                    </tr>
+                                </thead>
+               
+                                <tbody *ngFor="let cliente of clientes">
+                     
+                                    <td>{{ cliente.nombres }}</td>
+                                    <td>{{ cliente.carnet }}</td>
+                                    <td>{{ cliente.telefono }}</td>
+                                    <td>{{ cliente.correo }}</td>
+                                    <td>{{ cliente.factura }}</td>
+                                    <td>{{ cliente.monto }}</td>
+                                    <td>{{ cliente.ciudad }}</td>
+                                    <td>{{ cliente.premio }}</td>
+                                    <td>{{ cliente.fecha }}</td>
+                                   
+
+
+                                </tbody>
+                            </table>
+
+                            <button (click)="exportToExcel()">Export</button>
+                        </div>
+                    </div>
+    
+
+            </div>
+   
+
+    </div>
+

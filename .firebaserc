@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "misterybox-34063": {
+      "hosting": {
+        "mistery-admin": [
+          "misterybox-34063"
+        ]
+      }
+    }
+  }
+}

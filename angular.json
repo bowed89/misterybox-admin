@@ -13,6 +13,19 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+
+            
+            "allowedCommonJsDependencies": [
+              "firebase/app",
+              "@firebase/app",
+              "@firebase/firestore",
+              "@firebase/database",
+              "@firebase/component",
+              "@firebase/util",
+              "exceljs/dist/exceljs.min.js"
+           
+          ],
+
             "outputPath": "dist/mistery-admin",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -117,8 +130,16 @@
               "devServerTarget": "mistery-admin:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
-    }},
-  "defaultProject": "mistery-admin"
+    }
+  },
+  "defaultProject": "mistery-admin",
+  "cli": {
+    "analytics": false
+  }
 }
