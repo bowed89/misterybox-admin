@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientesService } from '../../servicios/clientes.service';
-import * as Excel from "exceljs/dist/exceljs.min.js";
+
+import * as XLSX from 'xlsx';
+
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-listado',
@@ -10,34 +13,15 @@ import * as Excel from "exceljs/dist/exceljs.min.js";
 export class ListadoComponent implements OnInit {
 
   clientes: any;
-
-  sName:string;
-  excelFileName:string;
- /*  sheet.columns = [
-    { key: 'Nombres y Apellidos' },
-    { key: 'Carnet de Identidad' },
-    { key: 'Número de teléfono' },
-    { key: 'Correo Electrónico' },
-    { key: 'Nro Factura' },
-    { key: 'Monto en Bs.' },
-    { key: 'Ciudad' },
-    { key: 'Premio' },
-    { key: 'Fecha Premio' }
-
-
-  ]; */
-  cols =['Nombres y Apellidos','Carnet de Identidad','Número de teléfono','Correo Electrónico','Nro Factura', 'Monto en Bs.', 'Ciudad', 'Premio', 'Fecha Premio']
-  
-  
-  blobType: string = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-
-
+  fileName= 'ExcelSheet.xlsx';
 
   constructor(
-    private _clientesService: ClientesService
+    private _clientesService: ClientesService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
+
 
     this._clientesService.obtenerClientes().subscribe(resp => {
 
@@ -46,6 +30,7 @@ export class ListadoComponent implements OnInit {
         return {
 
           nombres: e.payload.doc.data()['nombre'],
+          apellido: e.payload.doc.data()['apellido'],
           premio: e.payload.doc.data()['premio'],
           telefono: e.payload.doc.data()['telefono'],
           carnet: e.payload.doc.data()['carnet'],
@@ -58,66 +43,28 @@ export class ListadoComponent implements OnInit {
         }
 
       });
-      console.log(this.clientes)
+      
     });
 
+  }
 
+  exportexcel() {
+
+    let element = document.getElementById('excel-table'); 
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    XLSX.writeFile(wb, this.fileName);
 
   }
 
-  exportToExcel() {
-    var workbook = new Excel.Workbook();
-    workbook.creator = 'Web';
-    workbook.lastModifiedBy ='Web';
-    workbook.created = new Date();
-    workbook.modified = new Date();
-    workbook.addWorksheet(this.sName, { views: [{ state: 'frozen', ySplit: 3, xSplit: 2, activeCell: 'A1', showGridLines: false }] })
-    var sheet = workbook.getWorksheet(1);
-    var head1 = ["Exported Data"];
-    sheet.addRow(head1);
-    sheet.addRow("");
-    sheet.getRow(3).values = this.cols;
-    sheet.columns = [
-      { key: 'col1' },
-      { key: 'col2' },
-      { key: 'col3' },
-      { key: 'col4' },
-      { key: 'col5' },
-      { key: 'col6' },
-      { key: 'col7' },
-      { key: 'col8' },
-      { key: 'col9' },
-      
-    ];
-
- 
-    for(let i in this.clientes) {
-      
-
-
-      let data=[
-        
-        {col1: this.clientes[i].nombres, col2: this.clientes[i].carnet, col3: this.clientes[i].telefono, col4: this.clientes[i].correo, col5: this.clientes[i].factura, col6: this.clientes[i].monto, col7: this.clientes[i].ciudad, col8: this.clientes[i].premio, col9: this.clientes[i].fecha },
-
-      ]
-
-
-
-      sheet.addRows(data);
-      workbook.xlsx.writeBuffer().then(data => {
-        var blob = new Blob([data], { type: this.blobType });
-        var url = window.URL.createObjectURL(blob);
-        var a = document.createElement("a");
-        document.body.appendChild(a);
-        a.href = url;
-        a.download = this.excelFileName;
-        a.click();
- 
-      });
-
-    }
-
-
+  logout() {
+    localStorage.clear();
+    this.router.navigate(['/login']);
   }
+
+
 
 }

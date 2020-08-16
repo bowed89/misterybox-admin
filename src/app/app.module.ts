@@ -16,6 +16,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './componentes/login/login.component';
 import { ListadoComponent } from './componentes/listado/listado.component';
 
+import { GuardsGuard } from './guards/guards.guard';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +33,10 @@ import { ListadoComponent } from './componentes/listado/listado.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [ClientesService],
+  providers: [
+    ClientesService, 
+    GuardsGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

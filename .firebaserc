@@ -1,9 +1,15 @@
 {
+  "projects": {
+    "default": "misterybox-34063"
+  },
   "targets": {
     "misterybox-34063": {
       "hosting": {
-        "mistery-admin": [
-          "misterybox-34063"
+        "user": [
+          "misterybox-admin2020"
+        ],
+        "admin": [
+          "misterybox-user20"
         ]
       }
     }

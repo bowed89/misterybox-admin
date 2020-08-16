@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AdministradorService } from '../../servicios/administrador.service';
+import Swal from 'sweetalert2'; 
 
 @Component({
   selector: 'app-login',
@@ -8,11 +10,17 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
+  administrador : any;
+
   public user = {
-    usuario: 'jesus',
-    password: 'jesus'
+    usuario: '',
+    password: ''
   } 
-  constructor(private router: Router) { }
+
+  constructor(
+    private _administradorService: AdministradorService,
+    private router: Router
+    ) { }
 
   ngOnInit(): void {
   }
@@ -20,13 +28,49 @@ export class LoginComponent implements OnInit {
   login(loginForm) {
 
 
-    if (loginForm.value.usuario === 'jesus' && loginForm.value.password === 'jesus') {
 
-      this.router.navigate(['listado']);
-    
-  } else {
-    console.log('error')
-  }
+     this._administradorService.filtrarAdmin(loginForm.value.usuario, loginForm.value.password).subscribe(resp => {
+
+      this.administrador = resp.map(e => {
+
+        return {
+
+          usuario: e.payload.doc.data()['usuario'],
+          password: e.payload.doc.data()['password'],
+
+        }
+
+
+      })
+
+      localStorage.setItem('usuario', JSON.stringify(this.administrador));
+
+
+        if (Object.keys(resp).length > 0) {
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Bienvenido!',
+            text: 'Bienvenido al listado de clientes',
+          })
+          
+
+          this.router.navigate(['listado']);
+
+
+        } else {
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Por favor verifique el usuario y contraseña',
+          })
+
+        }
+
+
+    })
+ 
 
 }
 

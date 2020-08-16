@@ -22,7 +22,7 @@
               "@firebase/database",
               "@firebase/component",
               "@firebase/util",
-              "exceljs/dist/exceljs.min.js"
+              "xlsx"
            
           ],
 
